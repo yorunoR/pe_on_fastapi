@@ -8,4 +8,6 @@ router = APIRouter()
 @router.post("/execute", response_model=execution_schema.Output)
 async def execute(execution_body: execution_schema.Input):
     result, error = execution_action.execute(execution_body)
+    if error is not None:
+        raise HTTPException(status_code=422, detail=error)
     return {"result": result}
